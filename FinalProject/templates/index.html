@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <style>
+            * { margin:0;
+                padding:0;
+                box-sizing:border-box}
+
+            body {
+             margin: 0;
+             padding:0;
+	        width: 100%;
+	        max-width: 2048px; /* or whatever width you want */
+                }
+
+                .card {display: flex;
+                       justify-content: center;
+                       flex-direction: row;}
+
+                  .control{
+                  align-items: center;
+                  text-align: center;}
+
+                .fa fa-search {align-items: center;
+                              text-align: center;}
+
+
+    </style>
+
+
+    <script type=text/javascript>
+			$(function() {
+			  $('a#process_input').bind('click', function() {
+				$.getJSON('/weather_lookup', {
+				  city_Lookup: $('input[name="city_Lookup"]').val(),
+				}, function(data) {
+				  $("#result").text(data.result);
+				});
+				return false;
+			  });
+			});
+
+    </script>
+
+
+</head>
+
+
+<body>
+
+<section class="hero is-link">
+    <div class="hero-body">
+        <p class="title">
+            Welcome To Weather App
+        </p>
+        <p class="subtitle">
+            The Best Weather App
+        </p>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+<form class="weather_item" method="POST">
+    <div class="control">
+        <input class="input_city" type="text" placeholder="Seach City......." name="city_Lookup">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </div>
+    <div class="control">
+        <label class="radio">
+            <input type="radio" name="option" id="option1" value="F">
+            F</label>
+        <label class="radio">
+            <input type="radio" name="option" id="option2" value="C">
+            C
+        </label>
+        <input type="radio" name="option" id="option3" value="K">
+        K
+        </label>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    {% if category == 'error' %}
+    {% set message_class = 'is-danger' %}
+    {%endif %}
+    <div class="notification {{ message_class }}">
+        <button class="delete"></button>
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</form>
+<br>
+
+<div class="card">
+    <div class="card-content">
+        <div class="media">
+            <div class="media-left">
+                <figure class="image is-48x48">
+                    <img src= 'http://openweathermap.org/img/w/{{weatherInfo.icon}}.png' alt="weather image">
+                </figure>
+            </div>
+            <div class="media-content">
+                <p class="title is-4">{{weatherInfo.city}}</p>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <span class="SearchButtonClass">City: {{weatherInfo.city}}</span>
+            <br>
+
+            <span class="SearchButtonClass">Temperture: {{weatherInfo.temperature}}</span>
+            <br>
+
+            <span class="SearchButtonClass">Max Temperture: {{weatherInfo.temperature_max}}</span>
+            <br>
+            <span class="SearchButtonClass">Min Temperture: {{weatherInfo.temperature_min}}</span>
+            <br>
+
+            <span class="SearchButtonClass">Pressure: {{weatherInfo.pressure}}</span>
+            <br>
+
+            <span class="SearchButtonClass">Humidity: {{weatherInfo.humidity}}</span>
+            <br>
+
+
+            <br>
+            <time datetime="">{{todaysDate}}</time>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Weather APP</strong> by Felipe Castillo. The source code is licensed To ME. The website content
+            is licensed by a fake institution.
+        </p>
+    </div>
+</footer>
+
+</body>
+
+</html>
