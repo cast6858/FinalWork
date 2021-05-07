@@ -3,6 +3,7 @@ from OpenWeatherMapsApi import WeatherMapsApi
 from WeatherMapsController import WeatherMapsControl
 from TemptureConversion import ConvertTemperature
 from CityValidation import ValidationOfCity
+from VerifyState import ValidatingState
 from flask import Flask , render_template ,request,jsonify, redirect, url_for,flash
 
 
@@ -100,21 +101,27 @@ def server_issue(expecption):
 
 
 
-@app.route("/cityweather", methods=['GET','POST'])
+@app.route("/", methods=['GET','POST'])
 def index():
     city = ''
     weather = ''
     error = True
+    abbrevation = ''
     temperatureType = ''
     todaysDate = date_time_today()
     if request.method == 'POST':
         city = request.form.get('city_Lookup')
+        abbrevation = request.form.get('state_Lookup')
         temperatureType = request.form.getlist('option')
     weather = weather_call(city)
     if not weather: #validated cVaity
         json_object = conntect_api_weather(city)
         weather_session = WeatherMapsControl(json_object)
+
         if weather_session.weatherName != None:
+            verfied_state = ValidatingState()
+            print(verfied_state.state_look_up(weather_session.weatherName))
+
             temperature_scale = ConvertTemperature()
 
             temperatures_scale_Returned = temperature_type_scale(temperatureType,temperature_scale,weather_session)
