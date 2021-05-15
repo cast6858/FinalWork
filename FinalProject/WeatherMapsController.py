@@ -12,6 +12,7 @@ class WeatherMapsControl:
         self.weatherTemMax = json_payload['main']['temp_max'] #Max Tempurture
         self.weatherHumidity = json_payload['main']['humidity'] #Humidity
         self.weatherIcon = json_payload['weather'][0]['icon']
+        self.weatherClouds = json_payload['clouds']['all']
 
 
 

@@ -25,41 +25,23 @@
                 box-sizing:border-box}
 
             body {
-             margin: 0;
-             padding:0;
+            margin: 0;
+            padding:0;
 	        width: 100%;
-	        max-width: 2048px; /* or whatever width you want */
-                }
+	        max-width: 2048px;
+            }
 
-                .card {display: flex;
-                       justify-content: center;
-                       flex-direction: row;}
+            .card {display: flex;
+             justify-content: center;
+             flex-direction: row;}
 
-                  .control{
-                  align-items: center;
-                  text-align: center;}
+             .control{
+              align-items: center;
+              text-align: center;}
 
-                .fa fa-search {align-items: center;
-                              text-align: center;}
-
-
+              .fa fa-search {align-items: center;
+              text-align: center;}
     </style>
-
-
-    <script type=text/javascript>
-			$(function() {
-			  $('a#process_input').bind('click', function() {
-				$.getJSON('/weather_lookup', {
-				  city_Lookup: $('input[name="city_Lookup"]').val(),
-				}, function(data) {
-				  $("#result").text(data.result);
-				});
-				return false;
-			  });
-			});
-
-    </script>
-
 
 </head>
 
@@ -83,7 +65,7 @@
 <form class="weather_item" method="POST">
     <div class="control">
         <input class="input_city" type="text" placeholder="Seach City......." name="city_Lookup">
-        <input class="input_state" type="text" placeholder="Input State......." name="state_Lookup">
+        <input class="input_state" type="text" placeholder="State abbreviation......." name="state_Lookup" maxlength = "2">
         <button type="submit"><i class="fa fa-search"></i></button>
     </div>
     <div class="control">
@@ -124,7 +106,7 @@
                 </figure>
             </div>
             <div class="media-content">
-                <p class="title is-4">{{weatherInfo.city}}</p>
+                <p class="title is-3">{{weatherInfo.city}}</p>
             </div>
         </div>
 
@@ -147,6 +129,8 @@
             <span class="SearchButtonClass">Humidity: {{weatherInfo.humidity}}</span>
             <br>
 
+            <span class="SearchButtonClass">Cloud Cover: {{weatherInfo.cloud_amount}}</span>
+            <br>
 
             <br>
             <time datetime="">{{todaysDate}}</time>

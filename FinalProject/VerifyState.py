@@ -1,6 +1,34 @@
 class ValidatingState:
 
-    def state_look_up(self, city):
+
+
+    def state_with_abv_look_up(self,city,state): # making sure state and city belong if so the state belongs to city
+        found_values = []
+        state_confirmed = ''
+        list_of_state_dictionaries = self.state_city_combination()
+
+        for dictionary in list_of_state_dictionaries:
+            if (dictionary["city"] == city and dictionary['state'] == state):
+                found_values.append(dictionary)
+
+        for state in found_values:
+            for val in state.values():
+                state_confirmed = val
+        return state_confirmed
+
+
+
+    def abv_state_record(self,abv): # validating user input of abbrvations and seing if it exists
+        state = ''
+        formatted_abv = abv.upper()
+        list_of_state_abv_list = self.state_abbrevaiton_dictionary()
+        for key,value in list_of_state_abv_list.items():
+            if key == formatted_abv:
+                state = value
+        return state
+
+
+    def state_look_up(self, city): #finding the city state
         found_values = []
         state = ''
         list_of_state_dictionaries = self.state_city_combination()
@@ -14,7 +42,15 @@ class ValidatingState:
                     state = val
         return state
 
-    def state_city_combination(self):
+    def state_abv_lookup(self,state):# finding the abv of state
+        state_abv = ''
+        list_of_state_abv_list = self.state_abbrevaiton_dictionary()
+        for key,value in list_of_state_abv_list.items():
+            if value == state:
+                state_abv = key
+        return state_abv
+
+    def state_city_combination(self): #City and states taken from git hub record
         state_dictionary = [
             {'city': 'Abbeville', 'state': 'Louisiana'},
             {'city': 'Aberdeen', 'state': 'Maryland'},
@@ -5997,3 +6033,16 @@ class ValidatingState:
             {'city': 'Zionsville', 'state': 'Indiana'},
             {'city': 'Zuni Pueblo', 'state': 'New Mexico'}, ]
         return state_dictionary
+
+    def state_abbrevaiton_dictionary(self):
+        states_abv = {"AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado",
+                  "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia", "HI": "Hawaii", "ID": "Idaho",
+                  "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas", "KY": "Kentucky", "LA": "Louisiana",
+                  "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts", "MI": "Michigan", "MN": "Minnesota",
+                  "MS": "Mississippi", "MO": "Missouri", "MT": "Montana", "NE": "Nebraska", "NV": "Nevada",
+                  "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", "NY": "New York", "NC": "North Carolina",
+                  "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma", "OR": "Oregon", "PA": "Pennsylvania",
+                  "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota", "TN": "Tennessee", "TX": "Texas",
+                  "UT": "Utah", "VT": "Vermont", "VA": "Virginia", "WA": "Washington", "WV": "West Virginia",
+                  "WI": "Wisconsin", "WY": "Wyoming"}
+        return states_abv
