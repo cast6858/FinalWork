@@ -2,8 +2,8 @@ from datetime import date
 from OpenWeatherMapsApi import WeatherMapsApi
 from WeatherMapsController import WeatherMapsControl
 from TemptureConversion import ConvertTemperature
-from CityValidation import ValidationOfCity
-from VerifyState import ValidatingState
+from CityErrorValidation import ValidationOfCity
+from CityStateValidation import ValidatingState
 from flask import Flask , render_template ,request,jsonify, redirect, url_for,flash
 
 
@@ -79,9 +79,14 @@ def temperature_type_scale(temperatureType,temperature_scale,weather_session):
 
 
 def conntect_api_weather(city):
+    json_object = ''
     weatherRequest = WeatherMapsApi(city)
-    url = weatherRequest.WeatherUrl()
-    json_object = weatherRequest.JsonData(url)
+    if(city.isnumeric()):
+        url = weatherRequest.weather_url_zipCode()
+        json_object = weatherRequest.JsonData(url)
+    else:
+        url = weatherRequest.weather_url_word()
+        json_object = weatherRequest.JsonData(url)
     return json_object
 
 
@@ -138,7 +143,7 @@ def Find_Weather():
         abbrevation = request.form.get('state_Lookup')
         temperatureType = request.form.getlist('option')
     weather = weather_call(city)
-    if not weather: #validated city
+    if not weather: #validated city return a good status
         json_object = conntect_api_weather(city)
         weather_session = WeatherMapsControl(json_object)
 
@@ -149,13 +154,13 @@ def Find_Weather():
             if(abbrevation != ""): #user provids a abbrevation, making sure user doesnt use an incorrect abbrevation
 
                 state = verfied_state.abv_state_record(abbrevation)
-                confirmed_state = verfied_state.state_with_abv_look_up(weather_session.weatherName, state)
-                state_abbrevation_confirmed = verfied_state.state_abv_lookup(confirmed_state)
+                confirmed_state = verfied_state.state_with_abv_look_up(weather_session.weatherName, state) #validated abv belongs to state
+                state_abbrevation_confirmed = verfied_state.state_abv_lookup(confirmed_state) # returning confirmed abv
 
 
-            else: # by default if abbrevation is not provided the first one found will provided, if its actaully a state, city combination
-                state = verfied_state.state_look_up(weather_session.weatherName)
-                state_abbrevation_confirmed = verfied_state.state_abv_lookup(state)
+            #else: # by default if abbrevation is not provided the first one found will provided, if its actaully a state, city combination
+             #   state = verfied_state.state_look_up(weather_session.weatherName)
+             #   state_abbrevation_confirmed = verfied_state.state_abv_lookup(state)
 
 
             temperature_scale = ConvertTemperature() # Converting temperature to usr selection

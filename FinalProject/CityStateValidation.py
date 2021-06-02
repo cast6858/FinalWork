@@ -1,6 +1,8 @@
 class ValidatingState:
 
-
+   #Makes sure that user doesnt just insert a radnom combination of values like Greeley , TX.
+   # Needs to be validated if value is found but the state abv is wrong, assumption of first city will be found
+   # If combination exist dallas, tx, user inserted correct values, validation is complete
 
     def state_with_abv_look_up(self,city,state): # making sure state and city belong if so the state belongs to city
         found_values = []
@@ -8,20 +10,20 @@ class ValidatingState:
         list_of_state_dictionaries = self.state_city_combination()
 
         for dictionary in list_of_state_dictionaries:
-            if (dictionary["city"] == city and dictionary['state'] == state):
+            if (dictionary["city"] == city and dictionary['state'] == state): #checking for city and state match
                 found_values.append(dictionary)
 
         for state in found_values:
             for val in state.values():
                 state_confirmed = val
-        return state_confirmed
+        return state_confirmed # When there is a match it returns true
 
 
 
-    def abv_state_record(self,abv): # validating user input of abbrvations and seing if it exists
+    def abv_state_record(self,abv): # validating user input of abbrvations and seeing if it exists
         state = ''
         formatted_abv = abv.upper()
-        list_of_state_abv_list = self.state_abbrevaiton_dictionary()
+        list_of_state_abv_list = self.state_abbrevaiton_dictionary() #locating a value pair that state matches abv
         for key,value in list_of_state_abv_list.items():
             if key == formatted_abv:
                 state = value

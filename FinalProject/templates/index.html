@@ -7,6 +7,8 @@
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
+
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,7 +44,6 @@
               .fa fa-search {align-items: center;
               text-align: center;}
     </style>
-
 </head>
 
 
@@ -64,9 +65,9 @@
 <br>
 <form class="weather_item" method="POST">
     <div class="control">
-        <input class="input_city" type="text" placeholder="Seach City......." name="city_Lookup">
-        <input class="input_state" type="text" placeholder="State abbreviation......." name="state_Lookup" maxlength = "2">
-        <button type="submit"><i class="fa fa-search"></i></button>
+        <input class="input_city"  type="text" placeholder="Seach City......." name="city_Lookup">
+        <input class="input_state"   type="text" placeholder="State abbreviation......." name="state_Lookup" maxlength = "2">
+        <button type="submit" id="btSubmit"><i class="fa fa-search"></i></button>
     </div>
     <div class="control">
         <label class="radio">
@@ -111,7 +112,6 @@
         </div>
 
         <div class="content">
-
             <span class="SearchButtonClass">City: {{weatherInfo.city}}</span>
             <br>
 
@@ -148,5 +148,26 @@
 </footer>
 
 </body>
+
+<script>
+    let cityInput = document.querySelector(".input_city");
+    let abvInput = document.querySelector(".input_state");
+    let buttonSub = document.querySelector("#btSubmit");
+
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+       document.getElementById("btSubmit").disabled = true;    // setting to disable as default
+    });
+
+    abvInput.addEventListener("change", stateHandle);
+
+    function stateHandle() {
+      if (document.querySelector(".input_state").value === "" && document.querySelector(".input_city").value === "") {
+         buttonSub.disabled = true; //button remains disabled
+      } else {
+        buttonSub.disabled = false;//button is enabled
+      }
+    }
+</script>
 
 </html>
